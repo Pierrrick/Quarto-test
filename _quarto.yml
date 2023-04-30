@@ -20,3 +20,4 @@ editor: visual
 
 execute:
   freeze: true 
+  cache: true

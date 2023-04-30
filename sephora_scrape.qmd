@@ -2,7 +2,7 @@
 title: "Scrape Sephora"
 ---
 
-```{pyth Scraping sephora.fr, eval=FALSE}
+```{python Scraping sephora.fr}
 import logging
 import re
 import requests
