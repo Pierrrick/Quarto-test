@@ -1,6 +1,10 @@
 ---
-title: "Scrape Sephora"
+title: "Extraction de données Sephora"
 ---
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Sephora_logo.svg/512px-Sephora_logo.svg.png?20180411213419){fig-alt="Logo sephora" width="77"}
+
+L'objectif de cette section est de récupérer les informations de produits du site. On s'intéresse principalement au nom, à la marque, à la liste des ingrédients et au prix au litre du produit. Ces information sont ensuite enregistré dans un fichier csv pour être utilisé plus tard avec d'autres base de données similaires.
 
 ```{python Scraping sephora.fr}
 import logging

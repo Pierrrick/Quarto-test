@@ -7,8 +7,9 @@ website:
     left:
       - href: index.qmd
         text: Acceuil
-      - about.qmd
       - sephora_scrape.qmd
+      - about.qmd
+      
 
 format:
   html:
