@@ -3,4 +3,6 @@ title: "Site de Test"
 lang: "fr"
 ---
 
+[Extraction de données Sephora](sephora_scrape.qmd){style="color:#FF74B8;"}
+
 [About](about.qmd "about")

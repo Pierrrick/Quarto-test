@@ -6,9 +6,10 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Acceuil
-      - about.qmd
+        text: Accueil
       - sephora_scrape.qmd
+      - about.qmd
+      
 
 format:
   html:
