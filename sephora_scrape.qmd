@@ -2,7 +2,7 @@
 title: "Scrape Sephora"
 ---
 
-```{python}
+```{pyth Scraping sephora.fr, eval=FALSE}
 import logging
 import re
 import requests
@@ -66,5 +66,3 @@ if __name__ == '__main__':
     logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
     main()
 ```
-
-[sephora.csv](sephora.csv)
