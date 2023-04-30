@@ -1,11 +1,6 @@
 ---
-title: "test"
+title: "Site de Test"
+lang: "fr"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+[About](about.qmd "about")
