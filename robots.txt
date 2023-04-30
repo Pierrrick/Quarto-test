@@ -1,1 +1,1 @@
-Sitemap: https://Pierrrick.github.io/Quarto-test/sitemap.xml
+Sitemap: https://github.com/Pierrrick/Quarto-test/sitemap.xml
