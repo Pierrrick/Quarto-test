@@ -11,3 +11,9 @@ Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
+
+PythonType: system
+PythonVersion: 3.11.3
+PythonPath: C:/Users/pierr/AppData/Local/Programs/Python/Python311/python.exe
+
+SpellingDictionary: fr_FR
