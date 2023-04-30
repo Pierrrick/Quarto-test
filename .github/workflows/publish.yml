@@ -15,7 +15,6 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
       - name: Set up R and install rmarkdown
         run: |
-          sudo apt-get install -y r-base
           Rscript -e 'install.packages("rmarkdown", repos="https://cloud.r-project.org/")'
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
