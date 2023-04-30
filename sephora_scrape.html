@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>test - Scrape Sephora</title>
+<title>Site de Test Quarto - Scrape Sephora</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -105,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">test</span>
+    <span class="navbar-title">Site de Test Quarto</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -160,465 +126,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logging</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get(uri):</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    logging.info(<span class="ss">f'Will query: </span><span class="sc">{</span>uri<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> {<span class="st">'User-Agent'</span>: <span class="st">'Mozilla/5.0'</span>}</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> requests.get(uri, headers<span class="op">=</span>headers)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    r.raise_for_status()</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    r.encoding <span class="op">=</span> <span class="st">'UTF-8'</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_soup(uri: <span class="bu">str</span>) <span class="op">-&gt;</span> BeautifulSoup:</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> get(uri)</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> BeautifulSoup(r.text, <span class="st">'html.parser'</span>)</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    host <span class="op">=</span> <span class="st">"https://www.sephora.fr"</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> <span class="st">"/shop/cheveux/soin-cheveux/shampoing-c447/"</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    uri <span class="op">=</span> host <span class="op">+</span> path</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    soup <span class="op">=</span> get_soup(uri)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">'sephora_data.csv'</span>, <span class="st">'w'</span>, newline<span class="op">=</span><span class="st">'</span><span class="ch">\n</span><span class="st">'</span>,encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> csvfile:</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        writer <span class="op">=</span> csv.writer(csvfile, delimiter<span class="op">=</span><span class="st">','</span>)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        writer.writerow([<span class="st">'ingredients'</span>, <span class="st">'brand'</span>, <span class="st">'name'</span>, <span class="st">'price'</span>, <span class="st">'quantity'</span>, <span class="st">'unit'</span>])</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        expected_article_amount <span class="op">=</span> soup.find(<span class="st">'div'</span>, {<span class="st">'class'</span>: <span class="st">'results-hits'</span>}).text.split()[<span class="dv">0</span>]</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        logging.info(<span class="ss">f'Will get </span><span class="sc">{</span>expected_article_amount<span class="sc">}</span><span class="ss"> of articles.'</span>)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        all_articles_uri <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>host<span class="sc">}{</span>path<span class="sc">}</span><span class="ss">?srule=GoLiveSortingRule&amp;sz=</span><span class="sc">{</span>expected_article_amount<span class="sc">}</span><span class="ss">&amp;format=page-element&amp;start=0&amp;on=onclickload'</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        soup <span class="op">=</span> get_soup(all_articles_uri)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        articles <span class="op">=</span> soup.find_all(<span class="st">'div'</span>, attrs<span class="op">=</span>{<span class="st">'class'</span>: <span class="st">'product-info-wrapper'</span>})</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        logging.info(<span class="ss">f'Got </span><span class="sc">{</span><span class="bu">len</span>(articles)<span class="sc">}</span><span class="ss"> articles.'</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> article <span class="kw">in</span> articles:</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>            article_product_link <span class="op">=</span> article.find(<span class="st">'a'</span>, attrs<span class="op">=</span>{<span class="st">'class'</span>: <span class="st">'product-tile-link'</span>} )[<span class="st">'href'</span>]</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>            article_soup <span class="op">=</span> get_soup(article_product_link)</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>            brand <span class="op">=</span> article_soup.find(<span class="st">'a'</span>, {<span class="st">'class'</span>: <span class="st">'brand-link'</span>}).text.replace(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">''</span>)</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>            name <span class="op">=</span> article_soup.find(<span class="st">'span'</span>, {<span class="st">'class'</span>: <span class="st">'product-name product-name-bold'</span>}).text.replace(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">''</span>)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                ingredients <span class="op">=</span> article_soup.find(<span class="st">'div'</span>, {<span class="st">'class'</span>: <span class="st">'accordion-content ingredients-content'</span>}).text.replace(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>,<span class="st">''</span>).split(<span class="st">'.'</span>)[<span class="dv">0</span>]</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>                ingredients <span class="op">=</span> re.sub(<span class="st">"[\(\[].*?[\)\]]"</span>, <span class="st">""</span>, ingredients)</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>                logging.error(<span class="st">"Couldn't find the ingredients"</span>)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>                <span class="co"># unit contains the price and price the unit (go figure, I guess they are not talented enough)</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>                price <span class="op">=</span> article_soup.find(<span class="st">'span'</span>, {<span class="st">'class'</span>: <span class="st">'unit'</span>}).text.replace(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">''</span>).replace(<span class="st">' €'</span>, <span class="st">''</span>)</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>                quantity, unit <span class="op">=</span> article_soup.find(<span class="st">'span'</span>, {<span class="st">'class'</span>: <span class="st">'price'</span>}).text.replace(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">''</span>).replace(<span class="st">'ml'</span>, <span class="st">' ml'</span>).split()</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>                logging.error(<span class="st">"Couldn't find the price or unit "</span>)</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>            writer.writerow([ingredients, brand, name, price, quantity, unit])</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    logging.basicConfig(<span class="bu">format</span><span class="op">=</span><span class="st">'</span><span class="sc">%(levelname)s</span><span class="st">:</span><span class="sc">%(message)s</span><span class="st">'</span>, level<span class="op">=</span>logging.INFO)</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    main()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>INFO:Will query: https://www.sephora.fr/shop/cheveux/soin-cheveux/shampoing-c447/
-INFO:Will get 339 of articles.
-INFO:Will query: https://www.sephora.fr/shop/cheveux/soin-cheveux/shampoing-c447/?srule=GoLiveSortingRule&amp;sz=339&amp;format=page-element&amp;start=0&amp;on=onclickload
-INFO:Got 339 articles.
-INFO:Will query: https://www.sephora.fr/p/scalp-revival-charcoal---shampooing-exfoliant-441218.html
-INFO:Will query: https://www.sephora.fr/p/no.-4c-bond-maintenance---shampoing-clarifiant-619045.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-fortifiant---repare-hydrate-P10025021.html
-INFO:Will query: https://www.sephora.fr/p/symbiose-bain-purete-anti-pelliculaire---shampoing-anti-pelliculaire-purifiant-657375.html
-INFO:Will query: https://www.sephora.fr/p/symbiose-bain-creme-anti-pelliculaire---shampooing-anti-pelliculaire-hydratant-657374.html
-INFO:Will query: https://www.sephora.fr/p-kerastase_set_2.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p/shampoing-bond-maintenance-n%C2%B04-455723.html
-INFO:Will query: https://www.sephora.fr/p-kerastase_set_5.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p-kerastase_set_1.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p/sephora-favorites---coffret-de-soin-584779.html
-INFO:Will query: https://www.sephora.fr/p-kerastase_set_7.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p-kerastase_set_6.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p/shampoing-exfoliant-cheveux---nettoie-purifie-503123.html
-INFO:Will query: https://www.sephora.fr/p-Steampod_product_set_2.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p-Steampod_product_set_1.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p-kerastase_set_9.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p-kerastase_set_3.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p/blond-absolu---shampooing-bain-lumiere-472210.html
-INFO:Will query: https://www.sephora.fr/p-sephoracollection_haircareset_2.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/nutritive---shampooing-bain-satin-n%C2%B02-419596.html
-INFO:Will query: https://www.sephora.fr/p/specifique---bain-divalent-561072.html
-INFO:Will query: https://www.sephora.fr/p/sephora-favorites---coffret-pour-les-cheveux-581591.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-reparateur-hydratant-499728.html
-INFO:Will query: https://www.sephora.fr/p/discipline---shampooing-bain-fluidealiste-396962.html
-INFO:Will query: https://www.sephora.fr/p/genesis---bain-nutri-fortifiant-511084.html
-INFO:Will query: https://www.sephora.fr/p/hair-prodigieux%C2%AE---shampooing-brillance-miroir-668127.html
-INFO:Will query: https://www.sephora.fr/p/resistance---bain-force-architecte-396977.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-creme-moelle-de-bambou-43362.html
-INFO:Will query: https://www.sephora.fr/p/n%C2%B04p-blonde-enhancing-toning---shampoing-575417.html
-INFO:Will query: https://www.sephora.fr/p/chroma-absolu---shampoing-bain-chroma-respect-581833.html
-INFO:Will query: https://www.sephora.fr/p/elixir-ultime---shampooing-bain-aux-huiles-455670.html
-INFO:Will query: https://www.sephora.fr/p/no.-4-bond-maintenance-%E2%84%A2----shampoing-format-voyage-476385.html
-INFO:Will query: https://www.sephora.fr/p/blond-absolu---shampooing-bain-ultra-violet-472211.html
-INFO:Will query: https://www.sephora.fr/p/chronologiste-bain-regenerant---shampoing-revitalisant-jeunesse-521938.html
-INFO:Will query: https://www.sephora.fr/p/curl-manifesto---bain-hydratation-douceur-554403.html
-INFO:Will query: https://www.sephora.fr/p/silkamino-moisturizing---shampoo-611478.html
-INFO:Will query: https://www.sephora.fr/p/genesis---bain-hydra-fortifiant-511083.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-extra-volume-441744.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-fortifiant-a-l-eau-de-riz---shampoing-cheveux-fragiles-659077.html
-INFO:Will query: https://www.sephora.fr/p/resistance---shampooing-bain-extentioniste-443011.html
-INFO:Will query: https://www.sephora.fr/p/densifique---shampooing-bain-densite-396954.html
-INFO:Will query: https://www.sephora.fr/p/metal-detox---shampooing--creme-lavante-anti-depot-de-metaux-557769.html
-INFO:Will query: https://www.sephora.fr/p/color-security-shampoo---shampooing-dream-clean-ultime-533983.html
-INFO:Will query: https://www.sephora.fr/p/honey-infused-hair-wash---shampoing-P10047488.html
-INFO:Will query: https://www.sephora.fr/p/scrub-lavant-purifiant-au-sel-marin-264532.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-tout-nu---shampoing-solide-pour-cheveux-normaux-579273.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/specifique---shampooing-bain-vital-dermo-calm-397004.html
-INFO:Will query: https://www.sephora.fr/p/volumifique---shampooing-bain-volume-396996.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-regenerant-a-l-huile-de-figue-de-barbarie-566519.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-hydratant-a-l-aloe-vera-566518.html
-INFO:Will query: https://www.sephora.fr/p/bain-traitant-a-la-propolis-19651.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-sec-seboreducteur-a-l%E2%80%99ortie---cheveux-gras-P10044054.html
-INFO:Will query: https://www.sephora.fr/p/naturia---shampooing-sec-invisible-P10044088.html
-INFO:Will query: https://www.sephora.fr/p/specifique---argile-equilibrante-561070.html
-INFO:Will query: https://www.sephora.fr/p/chroma-absolu---bain-riche-chroma-respect-581834.html
-INFO:Will query: https://www.sephora.fr/p/color-lustre---shampooing-420002.html
-INFO:Will query: https://www.sephora.fr/p/champ%C3%BA-acidic-bonding-concentrate-551854.html
-INFO:Will query: https://www.sephora.fr/p/resistance---shampooing-bain-therapiste-397018.html
-INFO:Will query: https://www.sephora.fr/p/specifique---shampooing-bain-anti-pelliculaire-419598.html
-INFO:Will query: https://www.sephora.fr/p/hairdresser-s-invisible-oil-shampoo---shampooing-hydratant-sans-sulfates-304865.html
-INFO:Will query: https://www.sephora.fr/p/rituals-homme---coffret-m-corps-et-bain-641229.html
-INFO:Will query: https://www.sephora.fr/p/hair-rituel-by-sisley-revitalizing-straightening-shampoo-455242.html
-INFO:Will query: https://www.sephora.fr/p/volume-injection---shampoing-volumisant-cheveux-fins-et-plats-557742.html
-INFO:Will query: https://www.sephora.fr/p/specifique---shampooing-bain-riche-dermo-calm-419599.html
-INFO:Will query: https://www.sephora.fr/p/le-volume-en-vitrine---coffret-soin-cheveux-640798.html
-INFO:Will query: https://www.sephora.fr/p/invigo---shampoing-nourrissant-nutri-enrich-pour-cheveux-secs-ou-fragilises-P10023642.html
-INFO:Will query: https://www.sephora.fr/p/nutritive---shampooing-bain-satin-n%C2%B01-396982.html
-INFO:Will query: https://www.sephora.fr/p/don-t-despair--repair----coffret-solutions-fortifiantes-et-reparatrices-584495.html
-INFO:Will query: https://www.sephora.fr/p/genesis-homme---bain-de-force-quotidien-615339.html
-INFO:Will query: https://www.sephora.fr/p/botanical-repair-shampoo---shampoing-reparateur-a-base-de-plantes-531511.html
-INFO:Will query: https://www.sephora.fr/p/holiroots%E2%84%A2-shampoo---shampooing-hydratant-573481.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-hydratant-441745.html
-INFO:Will query: https://www.sephora.fr/p/the-ritual-of-sakura---shampoing-488820.html
-INFO:Will query: https://www.sephora.fr/p/ultimate-reset---shampooing-455677.html
-INFO:Will query: https://www.sephora.fr/p/soin-nomade-pour-les-mains-643021.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/shampoing-force-quinine-et-edelweiss-bio---chute-de-cheveux--cheveux-fatigues-P10026551.html
-INFO:Will query: https://www.sephora.fr/p/soleil---shampooing-bain-apres-soleil-480382.html
-INFO:Will query: https://www.sephora.fr/p/for-longer-stonger-hair---coffret-soin-cheveux-496070.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/shampooing-volume-aux-extraits-de-rose-566520.html
-INFO:Will query: https://www.sephora.fr/p/honey-infused-hair-wash-P10014609.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-quotidien---shampoing-fortifiant-et-assouplissant-565984.html
-INFO:Will query: https://www.sephora.fr/p/kelual-ds---shampooing-traitant-etats-pelliculaires-severes-659065.html
-INFO:Will query: https://www.sephora.fr/p/chroma-absolu---eco-recharge-bain-chroma-respect-riche-588874.html
-INFO:Will query: https://www.sephora.fr/p/serie-expert-chroma-creme---shampoing-neutralisant-de-reflets-jaunes-P10023731.html
-INFO:Will query: https://www.sephora.fr/p/voluminous-shampoo---shampoing-volumateur-421686.html
-INFO:Will query: https://www.sephora.fr/p/node-p-apaisant---shampooing-anti-pelliculaire-cuir-chevelu-sensible-649998.html
-INFO:Will query: https://www.sephora.fr/p/genesis---eco-recharge-bain-hydra-fortifiant-588875.html
-INFO:Will query: https://www.sephora.fr/p/muroto-volume---shampooing-503745.html
-INFO:Will query: https://www.sephora.fr/p/bain-volumateur-aux-algues-22599.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-violet-blond-parfait---shampoing-correcteur-537407.html
-INFO:Will query: https://www.sephora.fr/p/deep-cleanser---shampoing-doux-eclat-643310.html
-INFO:Will query: https://www.sephora.fr/p/voluminous-shampoo---shampoing-volume-format-voyage-502249.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/don-t-despair--repair--super-moisture-shampoo---shampooing-hydratant-441210.html
-INFO:Will query: https://www.sephora.fr/p/bain-vitalisant-b-19655.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-seboreducteur-a-l-ortie-bio---cheveux-gras-619775.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-sec-extra-doux-au-lait-d%E2%80%99avoine---tous-types-de-cheveux-P10044053.html
-INFO:Will query: https://www.sephora.fr/p/shampure---shampooing-nourrissant-470158.html
-INFO:Will query: https://www.sephora.fr/p/genesis---coffret-soins-cheveux-661769.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/bain-ts-19653.html
-INFO:Will query: https://www.sephora.fr/p/genesis-homme---bain-de-masse-epaissisant-615340.html
-INFO:Will query: https://www.sephora.fr/p/serie-expert-scalp-advanced---shampoing-dermo-purifiant-P10048755.html
-INFO:Will query: https://www.sephora.fr/p/soin-lavant-disciplinant-a-l-huile-de-macadamia-425627.html
-INFO:Will query: https://www.sephora.fr/p/y%C5%ABbi-blonde---shampooing-revelateur-d%E2%80%99eclat-545631.html
-INFO:Will query: https://www.sephora.fr/p/calendrier-de-l-avent-de-noel---the-ritual-of-advent-3d-640804.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/nutritive---eco-recharge-bain-nutritive-bain-satin-588877.html
-INFO:Will query: https://www.sephora.fr/p/bb.bond-building-shampoo---shampooing-reparateur-543919.html
-INFO:Will query: https://www.sephora.fr/p/holiroots%E2%84%A2-good-karma-hair-650777.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/serie-expert-scalp-advanced---shampoing-dermo-clarifiant-anti-pelliculaire-P10048751.html
-INFO:Will query: https://www.sephora.fr/p/nettoyant-au-sulfate-4%C2%A0%25---nettoyant-corps-et-cheveux-584902.html
-INFO:Will query: https://www.sephora.fr/p/scrub-lavant-purifiant-au-sel-marin---format-voyage-394621.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-solide-douceur-573275.html
-INFO:Will query: https://www.sephora.fr/p/thickening-shampoo---shampooing-volume-450789.html
-INFO:Will query: https://www.sephora.fr/p/color-extend-magnetics-shampoo-411085.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-complet-482485.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-cuir-chevelu-sensible---shampoing-solide-652564.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/discipline---shampooing-bain-oleo-relax-503341.html
-INFO:Will query: https://www.sephora.fr/p/inforcer---shampooing-renforcateur-anti-casse-enrichi-en-vitamine-b6-et-biotine-557766.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/node-k-concentre---shampoing-anti-squames-pour-cuir-chevelu-irrite-649996.html
-INFO:Will query: https://www.sephora.fr/p/all-soft-shampoo-411087.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-reviviscence-198023.html
-INFO:Will query: https://www.sephora.fr/p/serie-expert-curl-expression---shampoing-creme-hydratation-intense-P10026052.html
-INFO:Will query: https://www.sephora.fr/p/node-k-shampoing---shampoing-apaisant-anti-squame-649997.html
-INFO:Will query: https://www.sephora.fr/p/color-brilliance---shampoing-pour-cheveux-colores-fins-a-normaux-P10023636.html
-INFO:Will query: https://www.sephora.fr/p/invati-advanced-sup-tm--sup----shampooing-exfoliant-leger-535095.html
-INFO:Will query: https://www.sephora.fr/p/terre-d-hermes---shampoing-corps-et-cheveux-139328.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-a-la-camomille---illumine---cheveux-blonds-P10044058.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p/nutriplenish%C2%AE---shampooing-hydratation-profonde-506827.html
-INFO:Will query: https://www.sephora.fr/p/soin-lavant-revitalisant-volumateur-a-l-huile-de-camelia-425626.html
-INFO:Will query: https://www.sephora.fr/p/nutritive---shampooing-bain-magistral-396986.html
-INFO:Will query: https://www.sephora.fr/p/absolue-keratine---shampooing-soin-reparateur-619537.html
-INFO:Will query: https://www.sephora.fr/p/blond-absolu---coffret-cheveux-blonds-610321.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/creme-lavante-bouclier-couleur-617324.html
-INFO:Will query: https://www.sephora.fr/p/coffret-mini-solides-542617.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/serie-expert-scalp-advanced---shampoing-niacinamide-dermo-regulateur-apaisant-P10048752.html
-INFO:Will query: https://www.sephora.fr/p/pate-lavante-epaississante-a-l-algue-de-tahiti-566511.html
-INFO:Will query: https://www.sephora.fr/p/pate-lavante-volumisante-aux-extraits-de-rose-566510.html
-INFO:Will query: https://www.sephora.fr/p/soin-lavant-doux-purete---shampoing-purifiant-613698.html
-INFO:Will query: https://www.sephora.fr/p/blond-absolu---bain-cicaextreme-544034.html
-INFO:Will query: https://www.sephora.fr/p/nuxe-sun---shampooing-douche-apres-soleil-352149.html
-INFO:Will query: https://www.sephora.fr/p/liss-unlimited---shampoing-lissant-pour-cheveux-indisciplines-557768.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/shampoing-solide---lait-d-amandes-511255.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/blond-absolu---eco-recharge-bain-lumiere-588873.html
-INFO:Will query: https://www.sephora.fr/p/fusion-kit---coffret-rituel-cheveux-reparation-intense-619534.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-reequilibrant-au-galanga---antipelliculaire-P10044061.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-solide---shampoing-purifiant-619531.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/shampoing-tout-nu-cheveux-colores---shampoing-solide-668394.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/hairdresser-s-invisible-oil-ultra-rich---shampooing-cheveux-secs-a-tres-secs-572697.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-nutrition-a-la-mangue---cheveux-secs-P10026548.html
-INFO:Will query: https://www.sephora.fr/p/volumetry---shampoing-volumateur-pour-cheveux-fins-557778.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/extreme-length---shampoing-fortifiant-longueurs-557740.html
-INFO:Will query: https://www.sephora.fr/p/rosemary-mint---shampooing-purifiant-470156.html
-INFO:Will query: https://www.sephora.fr/p/deep-cleanser---shampoing-clarifiant-643309.html
-INFO:Will query: https://www.sephora.fr/p/full---shampooing-leger-587497.html
-INFO:Will query: https://www.sephora.fr/p/coffret-noel-pour-cheveux-secs---coffret-soin-cheveux-569743.html
-INFO:Will query: https://www.sephora.fr/p/smooth-infusion%E2%84%A2-shampoo---shampooing-lissant-611141.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-purifiant-a-la-boue-thermale---shampoing-detoxifiant-582791.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-a-la%C2%A0pivoine%C2%A0bio--%C2%A0apaisant-cuir-chevelu%C2%A0sensible-P10026560.html
-INFO:Will query: https://www.sephora.fr/p/color-control%E2%84%A2-shampoo---shampooing-protecteur-de-couleur-617476.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-tout-nu---shampoing-solide-pour-cheveux-secs-579272.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/amino-acid-shampoo---shampoing-a-l-huile-de-noix-de-coco-pour-cheveux-normaux-P10011646.html
-INFO:Will query: https://www.sephora.fr/p/ashita-supreme---shampooing-revitalisation-intense-pour-cheveux-et-cuir-chevelu-582802.html
-INFO:Will query: https://www.sephora.fr/p/serie-expert-chroma-creme---shampoing-neutralisant-de-reflets-oranges-582996.html
-INFO:Will query: https://www.sephora.fr/p/frizz-dismiss---shampoing-anti-frisottis-cheveux-fins-et-cheveux-epais-557741.html
-INFO:Will query: https://www.sephora.fr/p/hiar-rejuvenation---treatment-kit-576854.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/bb.-curl-shampoo---shampooing-hydratant-531666.html
-INFO:Will query: https://www.sephora.fr/p/naturia---shampooing-micellaire-douceur-643727.html
-INFO:Will query: https://www.sephora.fr/p/blond-absolu---coffret-soin-cheveux-blonds-661767.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/soin-lavant-perfecteur-de-couleur-a-l-extrait-de-fleur-d-hibiscus-507123.html
-INFO:Will query: https://www.sephora.fr/p/genesis---eco-recharge-bain-nutri-fortifiant-588876.html
-INFO:Will query: https://www.sephora.fr/p/serie-expert-serioxyl-advanced---shampoing-purifiant-P10048749.html
-INFO:Will query: https://www.sephora.fr/p/astera---shampooing-apaisant-fraicheur-619538.html
-INFO:Will query: https://www.sephora.fr/p/coffret-soins-iconiques---edition-limitee-577775.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-sec-seboreducteur-a-l%E2%80%99ortie-cheveux-gras-644192.html
-INFO:Will query: https://www.sephora.fr/p/node-a-shampooing---shampoing-apaisant-anti-irritations-cuir-chevelu-sensible-649992.html
-INFO:Will query: https://www.sephora.fr/p/fusio-scrub---gommage-scrub-energisant-503344.html
-INFO:Will query: https://www.sephora.fr/p/be-gentle--be-kind%E2%84%A2-aloes-et-lait-d-avoine-shampooing-ultra-apaisant-555825.html
-INFO:Will query: https://www.sephora.fr/p/invati-advanced-sup-tm--sup----shampooing-exfoliant-riche-535096.html
-INFO:Will query: https://www.sephora.fr/p/redken-extreme-bleach-recovery-shampoo-528158.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-solide-peche-du-verger-551688.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/shampooing-bouclier-couleur-aux-baies-de-camu-camu-566516.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-solide---shampoing-nourissant-619530.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/classic-shampoo---shampoing-421684.html
-INFO:Will query: https://www.sephora.fr/p/sap-moss-sup-tm--sup----shampooing-hydratant-non-alourdissant-485740.html
-INFO:Will query: https://www.sephora.fr/p/creme-aux-fleurs-19659.html
-INFO:Will query: https://www.sephora.fr/p/colormotion----shampoing-protecteur-de-couleur-pour-cheveux-colores-584926.html
-INFO:Will query: https://www.sephora.fr/p/serie-expert---silver-shampoo-P4112087.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-sublime-meches-293029.html
-INFO:Will query: https://www.sephora.fr/p/oil-reflections---shampoing-revelateur-de-lumiere-394915.html
-INFO:Will query: https://www.sephora.fr/p/sublim-curl---shampooing-sublimateur-de-boucles-643732.html
-INFO:Will query: https://www.sephora.fr/p/superfoods---coffret-soins-capillaires-a-la-mangue-et-cerise-617756.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/shampoing-au-lin-bio---volume-cheveux-fins-619770.html
-INFO:Will query: https://www.sephora.fr/p/anti-dandruff-shampoo-646121.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/shampooing-classique---shampoing-hydratant-et-adoucissant-546746.html
-INFO:Will query: https://www.sephora.fr/p/hydration-shampoo---shampoing-hydratant-440413.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-sec-volume-au-lin-bio---cheveux-fins--sans-volume-644188.html
-INFO:Will query: https://www.sephora.fr/p/resistance---eco-recharge-bain-force-architecte-588878.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-sec-en-poudre-extra-doux-au-lait-d%E2%80%99avoine-sans-gaz-644175.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/superfoods---coffret-soins-capillaires-a-la-pomme--matcha-et-kale-617755.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/trio-bye-bye-plastique-579270.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/shampooing-reconstituant---format-voyage-482474.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-solide-hydratant-a-l-aloe-vera-566517.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/les-incontournables---coffret-soin-cheveux-641514.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-au-miel-19652.html
-INFO:Will query: https://www.sephora.fr/p/curl%C2%A0charismamc---shampooing-hydratant-acide-amine-de-riz-avocat-609765.html
-INFO:Will query: https://www.sephora.fr/p/all-about-hydration---coffret-hydratation-cheveux-637091.html
-INFO:Will query: https://www.sephora.fr/p/karite-shampooing-nutritif-143444.html
-INFO:Will query: https://www.sephora.fr/p/be-gentle--be-kind-matcha---shampooing-revitalisant-441201.html
-INFO:Will query: https://www.sephora.fr/p/nutriplenish%C2%AE---shampooing-hydratation-legere-506830.html
-INFO:Will query: https://www.sephora.fr/p/scalp-d-ph-ense-%E2%84%A2---serum-nourrissant-et-protecteur-quotidien-584886.html
-INFO:Will query: https://www.sephora.fr/p/the-ritual-of-mehr---shampooing-663025.html
-INFO:Will query: https://www.sephora.fr/p/chroma-absolu---coffret-soin-cheveux-colores-661768.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/color-extend-blondage-shampoo-537966.html
-INFO:Will query: https://www.sephora.fr/p/shampoing%C2%A0a-la%C2%A0menthe-aquatique-bio---detox-cheveux-normaux-P10026559.html
-INFO:Will query: https://www.sephora.fr/p/curlbond%E2%84%A2---nettoyant-mousse-legere-remodelant-P10024280.html
-INFO:Will query: https://www.sephora.fr/p/blossom-et-bloom-ginseng-biotin-volumizing-shampoo---shampooing-volumisant-441202.html
-INFO:Will query: https://www.sephora.fr/p/botanical-repair-shampoo---shampoing-reparateur-format-voyage-531559.html
-INFO:Will query: https://www.sephora.fr/p/be-curly-shampoo---shampooing-cheveux-boucles-251508.html
-INFO:Will query: https://www.sephora.fr/p/serie-expert-curl-expression---gelee-lavante-anti-residus-616480.html
-INFO:Will query: https://www.sephora.fr/p/pure-abundance-shampoo---shampooing-volume-251510.html
-INFO:Will query: https://www.sephora.fr/p/routine-parfaite-pour-les-fetes-641853.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/chroma-absolu---bouteille-rechargeable-610317.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-sec-extra-doux-au-lait-d%E2%80%99avoine-cheveux-chatains-a-bruns-644174.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-dejaunissant-a-la-centauree-bio---cheveux-gris--blonds-P10044059.html
-INFO:Will query: https://www.sephora.fr/p/color-care---shampooing-violet-blond-parfait-537408.html
-INFO:Will query: https://www.sephora.fr/p/rainforest-grown-beauty---coffret-soin-cheveux-502251.html
-INFO:Will query: https://www.sephora.fr/p/nutritive---bain-satin-riche-691850.html
-INFO:Will query: https://www.sephora.fr/p/elution---shampooing-doux-equilibrant-antipelliculaire-P10047620.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-a-la-pivoine-bio---apaisant---cuir-chevelu-sensible-644195.html
-INFO:Will query: https://www.sephora.fr/p/capillaire-shampoing%C2%A0reparation-au-cupuacu%C2%A0bio%C2%A0-%C2%A0--cheveux-tres-secs-P10044060.html
-INFO:Will query: https://www.sephora.fr/p/y%C5%ABbi-blonde---shampooing-violet-anti-faux-reflets-545630.html
-INFO:Will query: https://www.sephora.fr/p/extreme-shampoo-411089.html
-INFO:Will query: https://www.sephora.fr/p/extra-doux---shampooing-dermo-protecteur-capsule-644150.html
-INFO:Will query: https://www.sephora.fr/p/elements---shampoing-tous-types-de-cheveux-cuir-chevelu-normal-a-gras-P10023633.html
-INFO:Will query: https://www.sephora.fr/p/cocomino-glossing---shampoo-541514.html
-INFO:Will query: https://www.sephora.fr/p/node-p-purifiant---shampoing-antipelliculaire-cheveux-gras-650000.html
-INFO:Will query: https://www.sephora.fr/p/scalp-solutions-balancing-shampoo---shampoing-purifiant-et-equilibrant-656915.html
-INFO:Will query: https://www.sephora.fr/p/surf-foam-wash-shampoo---shampooing-leger-273437.html
-INFO:Will query: https://www.sephora.fr/p/the-shampoo---le-shampooing-584845.html
-INFO:Will query: https://www.sephora.fr/p/coffret-hydratation-hairdressers--invisible-oil---coffret-soin-cheveux-586717.html
-INFO:Will query: https://www.sephora.fr/p/fine-hair---shampoing-pour-cheveux-fins-514558.html
-INFO:Will query: https://www.sephora.fr/p/destined-for-density%E2%84%A2---shampoing-densifiant-661180.html
-INFO:Will query: https://www.sephora.fr/p/classic-shampoo-travel-size---shampoing-reparateur-format-voyage-421688.html
-INFO:Will query: https://www.sephora.fr/p/okara-color---shampooing-eclat-643730.html
-INFO:Will query: https://www.sephora.fr/p/curl-charismamc---mini-soins-pour-cheveux-definis-et-hydrates-617754.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/anaphase---shampooing-complement-antichute-644149.html
-INFO:Will query: https://www.sephora.fr/p/damage-remedy-restructuring-shampoo---shampooing-reparateur-cheveux-abimes-284383.html
-INFO:Will query: https://www.sephora.fr/p/serie-expert-curl-expression---gelee-lavante-anti-residus-616481.html
-INFO:Will query: https://www.sephora.fr/p/mythic-oil---shampooing-aux-huiles---cheveux-fins-403336.html
-INFO:Will query: https://www.sephora.fr/p/amino-mint---shampoing-pour-racines-grasses-et-pointes-seches-581836.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-sec-detox-a-la-menthe-aquatique-bio-644191.html
-INFO:Will query: https://www.sephora.fr/p/hair-cleansing-cream---shampoing-detox-purifiant-560114.html
-INFO:Will query: https://www.sephora.fr/p/neopur---shampooing-antipelliculaire-equilibrant-cuir-chevelu-gras-619540.html
-INFO:Will query: https://www.sephora.fr/p/color-brilliance---shampoing-pour-cheveux-epais-et-colores-P10023637.html
-INFO:Will query: https://www.sephora.fr/p/squanorm---shampooing-traitant---pellicules-seches-659068.html
-INFO:Will query: https://www.sephora.fr/p/genesis---bouteille-rechargeable-610318.html
-INFO:Will query: https://www.sephora.fr/p/don-t-despair--repair----minisoins-capillaire-fortifiants-et-reparateurs-551677.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/node-ds--shampoint---shampoing-apaisant-anti-pelliculaire-649993.html
-INFO:Will query: https://www.sephora.fr/p/farewell-frizz---shampooing-lissant-477986.html
-INFO:Will query: https://www.sephora.fr/p/curl-shampoo---shampoing-pour-tous-types-de-boucles-619046.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-hydratation-brillance-au-karite-408063.html
-INFO:Will query: https://www.sephora.fr/p/tonucia---shampooing-repulpant-571220.html
-INFO:Will query: https://www.sephora.fr/p/nutritive----bain-satin-691846.html
-INFO:Will query: https://www.sephora.fr/p/be-gentle--be-kind-kale---apres-shampooing-nettoyant-441200.html
-INFO:Will query: https://www.sephora.fr/p/the-ritual-of-ayurveda---shampoing-488821.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-nutrition-a-la-mangue---cheveux-secs-644189.html
-INFO:Will query: https://www.sephora.fr/p/naturia---shampooing-micellaire-douceur---eco-recharge-643726.html
-INFO:Will query: https://www.sephora.fr/p/shampure%E2%84%A2---shampooing-solide-nourrissant-611139.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/blonde-shampoo---szampon-do-w%C5%82os%C3%B3w-blond-559062.html
-INFO:Will query: https://www.sephora.fr/p/redken-brews-mint-shampoo-438640.html
-INFO:Will query: https://www.sephora.fr/p/nutritive---bouteille-rechargeable-610319.html
-INFO:Will query: https://www.sephora.fr/p/sunflower---shampoing-protecteur-a-l-huile-de-tournesol-533968.html
-INFO:Will query: https://www.sephora.fr/p/nutriplenish%C2%AE---shampooing-hydratation-profonde-format-voyage-506832.html
-INFO:Will query: https://www.sephora.fr/p/rosemary-mint---shampooing-purifiant-format-voyage-470157.html
-INFO:Will query: https://www.sephora.fr/p/superfoods-mangue-cerise---shampooing-equilibrant-et-regulateur-de-sebum-564163.html
-INFO:Will query: https://www.sephora.fr/p/scalp-relief---shampoing-anti-pelliculaire-541386.html
-INFO:Will query: https://www.sephora.fr/p/neopur---shampooing-antipelliculaire-equilibrant-cuir-chevelu-sec-619539.html
-INFO:Will query: https://www.sephora.fr/p/medium-hair---shampoing-pour-cheveux-moyens-514559.html
-INFO:Will query: https://www.sephora.fr/p/the-ritual-of-karma---shampoing-488822.html
-INFO:Will query: https://www.sephora.fr/p/absolue-keratine---shampooing-soin-reparateur-547322.html
-INFO:Will query: https://www.sephora.fr/p/color-extend-graydiant-shampoo-510625.html
-INFO:Will query: https://www.sephora.fr/p/squanorm---shampooing-traitant-antipelliculaire---pellicules-grasses-659067.html
-INFO:Will query: https://www.sephora.fr/p/okara-color---shampooing-protecteur-couleur-519733.html
-INFO:Will query: https://www.sephora.fr/p/color-full-shampoo---shampoing-pour-cheveux-colores-421691.html
-INFO:Will query: https://www.sephora.fr/p/color-extend-brownlights-shampoo-537967.html
-INFO:Will query: https://www.sephora.fr/p/olive-fruit-oil---shampoing-nourrissant-a-l-huile-d-olive-533966.html
-INFO:Will query: https://www.sephora.fr/p/creme-de-coco-shampoo---shampooing-hydratant-236571.html
-INFO:Will query: https://www.sephora.fr/p/colormotion----shampoing-protecteur-de-couleur-pour-cheveux-colores-556833.html
-INFO:Will query: https://www.sephora.fr/p/okara-color---shampooing-dejaunissant-643731.html
-INFO:Will query: https://www.sephora.fr/p/baume-lavante-boucles-fabuleuses-au-beurre-de-kokum-568969.html
-INFO:Will query: https://www.sephora.fr/p/shampoing-masque-a-la-poudre-d-ortie-bio---cuir-chevelu-gras-619774.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-solide-a-l%E2%80%99avoine-%E2%80%94-tous-types-de-cheveux-644178.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/rituel-regenerant-d-exception---coffret-soin-cheveux-640810.html
-INFO:Will query: https://www.sephora.fr/p/shampooing-doux-482469.html
-INFO:Will query: https://www.sephora.fr/p/thick-hair---shampoing-pour-cheveux-epais-recharge-514568.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-solide-a-la-mangue---nutrition---cheveux-secs-644190.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/styling-by-redken---wax-blast---cire-en-spray-560831.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/blond-absolu---bouteille-rechargeable-610316.html
-INFO:Will query: https://www.sephora.fr/p/mythic-oil---shampooing-aux-huiles---cheveux-epais-403335.html
-INFO:Will query: https://www.sephora.fr/p/les-essentiels-corps-et-cheveux---kit-corps-et-chevux-573487.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/solaire---shampoing-douche-apres-soleil-au-monoi---corps-et-cheveux-644198.html
-INFO:Will query: https://www.sephora.fr/p/soin-lavant---antipelliculaire-apaisant-a-l-extrait-de-sauge-566172.html
-INFO:Will query: https://www.sephora.fr/p/capillaire---shampoing-force-a-la-quinine-et-edelweiss-bio-644196.html
-INFO:Will query: https://www.sephora.fr/p/blondage-high-bright---shampooing-eclat-pour-cheveux-blonds-587695.html
-INFO:Will query: https://www.sephora.fr/p/starter-kit---body-care-and-haircare-set-640770.html
-ERROR:Couldn't find the price or unit 
-INFO:Will query: https://www.sephora.fr/p/grooming-solutions-nourishing-shampoo-et-conditioner---shampoing-nourrissant-533930.html
-INFO:Will query: https://www.sephora.fr/p/redken-brews-3-in-1-shampoo-438643.html
-INFO:Will query: https://www.sephora.fr/p/invati-men-nourishing-exfoliating-shampoo---shampooing-exfoliant-anti-chute-363082.html
-INFO:Will query: https://www.sephora.fr/p/rice-and-wheat-volumizing-shampoo---shampoing-volumateur-533967.html
-INFO:Will query: https://www.sephora.fr/p/huile-de-germe-de-ble-39553.html
-INFO:Will query: https://www.sephora.fr/p/restore---shampooing-fortifiant-587502.html
-INFO:Will query: https://www.sephora.fr/p/la-fabrique-de-cadeaux---calendrier-de-l-avent-2021-560402.html
-INFO:Will query: https://www.sephora.fr/p/be-gentle--be-kind---shampooing-riche-et-ultranourrissant-467508.html
-INFO:Will query: https://www.sephora.fr/p/node-p-normalisant---shampooing-anti-pelliculaire-tous-types-de-cheveux-649999.html
-INFO:Will query: https://www.sephora.fr/p/node-fluide-shampoing---kit-soin-cheveux-649991.html
-INFO:Will query: https://www.sephora.fr/p/barbiere---shampoing-eclaircissant-cheveux-blancs-et-gris-511841.html
-INFO:Will query: https://www.sephora.fr/p/superfoods---coffret-cheveux-a-la-banane-et-a-la-noix-de-coco-pour-cheveux-secs-555880.html
-INFO:Will query: https://www.sephora.fr/p/perfect-hair-day---shampooing-hydratant-587501.html
-INFO:Will query: https://www.sephora.fr/p/curl-shampoo-534402.html
-INFO:Will query: https://www.sephora.fr/p/barbiere---shampoing-doux-511842.html
-INFO:Will query: https://www.sephora.fr/p/buildup-buster%C2%AE---nettoyant-clarifiant-doux-584887.html
-INFO:Will query: https://www.sephora.fr/p/no-poo-blue%C2%AE---nettoyant-neutralisant-sans-mousse-anti-reflets-cuivres-584893.html
-INFO:Will query: https://www.sephora.fr/p/scalp-puri-ph-y-%E2%84%A2---spray-exfoliant-rincage-facile-584894.html
-INFO:Will query: https://www.sephora.fr/p/purifying-clay-wash---nettoyant-purifiant-cuir-chevelu-659225.html
-INFO:Will query: https://www.sephora.fr/p/scalp-revival---shampooing-micro-exfoliant-charbon-et-huile-de-coco-617758.html
-INFO:Will query: https://www.sephora.fr/p/colorkick%C2%AE---shampoing-dejaunisseur-550420.html
-INFO:Will query: https://www.sephora.fr/p/blonde-revival-purple-toning---shampooing-raviveur-de-blond-617475.html
-INFO:Will query: https://www.sephora.fr/p/resistance---bouteille-rechargeable-610320.html
-INFO:Will query: https://www.sephora.fr/p/thirsty-girl---shampooing-anti-frisottis-au-lait-de-coco-479360.html
-INFO:Will query: https://www.sephora.fr/p/no-frizz---shampooing-lissant-587498.html
-INFO:Will query: https://www.sephora.fr/p/nutriplenish%C2%AE---shampooing-hydratation-legere-format-voyage-506833.html
-INFO:Will query: https://www.sephora.fr/p/cherry-almond---shampooing-adoucissant-format-voyage-471623.html
-INFO:Will query: https://www.sephora.fr/p/cherry-almond---shampooing-adoucissant-457030.html
-INFO:Will query: https://www.sephora.fr/p-kerastase_set_8.html
-ERROR:Couldn't find the ingredients
-INFO:Will query: https://www.sephora.fr/p/extra-doux-shampoing-a-l-avoine---tous-types-de-cheveux-P10026562.html
-INFO:Will query: https://www.sephora.fr/p/absolut-repair---shampoing-reparateur-et-hydratant-pour-cheveux-abimes-557761.html
-INFO:Will query: https://www.sephora.fr/p/fusion-intense-repair---shampoing-reparation-intense-pour-cheveux-abimes-444299.html
-INFO:Will query: https://www.sephora.fr/p/vitamino-color---shampooing-fixateur-de-couleur-antioxydant-et-filtre-uv-557776.html
-INFO:Will query: https://www.sephora.fr/p/pro-longer---shampoing-pour-cheveux-longs-aux-pointes-afffinees-557770.html
-INFO:Will query: https://www.sephora.fr/p/serie-expert---blondifier-shampoo-cool-557765.html</code></pre>
-</div>
-</div>
+<p>```{pyth Scraping sephora.fr, eval=FALSE} import logging import re import requests import csv from bs4 import BeautifulSoup</p>
+<p>def get(uri): logging.info(f’Will query: {uri}‘) headers = {’User-Agent’: ‘Mozilla/5.0’} r = requests.get(uri, headers=headers) r.raise_for_status() r.encoding = ‘UTF-8’ return r</p>
+<p>def get_soup(uri: str) -&gt; BeautifulSoup: r = get(uri) return BeautifulSoup(r.text, ‘html.parser’)</p>
+<p>def main(): host = “https://www.sephora.fr” path = “/shop/cheveux/soin-cheveux/shampoing-c447/” uri = host + path soup = get_soup(uri)</p>
+<pre><code>with open('sephora_data.csv', 'w', newline='\n',encoding="utf-8") as csvfile:
+    writer = csv.writer(csvfile, delimiter=',')
+    writer.writerow(['ingredients', 'brand', 'name', 'price', 'quantity', 'unit'])
+
+
+    expected_article_amount = soup.find('div', {'class': 'results-hits'}).text.split()[0]
+    logging.info(f'Will get {expected_article_amount} of articles.')
+    all_articles_uri = f'{host}{path}?srule=GoLiveSortingRule&amp;sz={expected_article_amount}&amp;format=page-element&amp;start=0&amp;on=onclickload'
+    soup = get_soup(all_articles_uri)
+    articles = soup.find_all('div', attrs={'class': 'product-info-wrapper'})
+    logging.info(f'Got {len(articles)} articles.')
+    for article in articles:
+        article_product_link = article.find('a', attrs={'class': 'product-tile-link'} )['href']
+        article_soup = get_soup(article_product_link)
+        brand = article_soup.find('a', {'class': 'brand-link'}).text.replace('\n', '')
+        name = article_soup.find('span', {'class': 'product-name product-name-bold'}).text.replace('\n', '')
+        try:
+            ingredients = article_soup.find('div', {'class': 'accordion-content ingredients-content'}).text.replace('\n','').split('.')[0]
+            ingredients = re.sub("[\(\[].*?[\)\]]", "", ingredients)
+        except Exception as e:
+            logging.error("Couldn't find the ingredients")
+            continue
+        try:
+            # unit contains the price and price the unit (go figure, I guess they are not talented enough)
+            price = article_soup.find('span', {'class': 'unit'}).text.replace('\n', '').replace(' €', '')
+            quantity, unit = article_soup.find('span', {'class': 'price'}).text.replace('\n', '').replace('ml', ' ml').split()
+        except Exception as e:
+            logging.error("Couldn't find the price or unit ")
+            continue
+
+        writer.writerow([ingredients, brand, name, price, quantity, unit])</code></pre>
+<p>if <strong>name</strong> == ‘<strong>main</strong>’: logging.basicConfig(format=‘%(levelname)s:%(message)s’, level=logging.INFO) main() ```</p>
 
 
 
