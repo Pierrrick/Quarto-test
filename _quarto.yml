@@ -2,12 +2,13 @@ project:
   type: website
 
 website:
-  title: "test"
+  title: "Site de Test Quarto"
   navbar:
     left:
       - href: index.qmd
-        text: Home
+        text: Acceuil
       - about.qmd
+      - sephora_scrape.qmd
 
 format:
   html:
