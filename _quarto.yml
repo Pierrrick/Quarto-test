@@ -7,7 +7,6 @@ website:
     left:
       - href: index.qmd
         text: Accueil
-      - sephora_scrape.qmd
       - about.qmd
       
 
